@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,6 +25,11 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
+      //定义路由
+      routes: {
+        "new_page": (context) => NewPage(content: context),
+        "tip_page": (context) => const TipRoute(text: "路由配置页传递的参数"),
+      },
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -62,6 +68,41 @@ class NewPage extends StatelessWidget {
       ),
       body: Center(
         child: Text(c),
+      ),
+    );
+
+  }
+}
+
+class TipRoute extends StatelessWidget {
+
+  const TipRoute({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("提示"),
+        backgroundColor: Colors.deepOrange,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text(text),
+              ElevatedButton(
+                  onPressed: () => Navigator.pop(context, "我是返回值"),
+                  child: const Text("返回"))
+            ],
+          ),
+        ),
       ),
     );
 
@@ -124,10 +165,28 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline4,
             ),
             TextButton(onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context){
+              //push方法返回的Future对象，包含着NewPage页面出栈时返回的数据
+              Future future = Navigator.push(context, MaterialPageRoute(builder: (context){
                 return NewPage(content: context);
               }));
-            }, child: const Text("新路由：既跳转界面"))
+            }, child: const Text("新路由：既跳转界面")),
+            //带参数的页面跳转，TipRoute页面出栈时回传数据，并且在控制台打印回传值
+            ElevatedButton(
+                onPressed: () async {
+                  var result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context){
+                          return const TipRoute(
+                              text: "我是参数xxx-xxx",
+                          );
+                      }),
+                  );
+                  if (kDebugMode) {
+                    print("路有返回值：$result");
+                  }
+                },
+                child: const Text("打开提示页"),
+            ),
           ],
         ),
       ),
