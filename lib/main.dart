@@ -25,11 +25,24 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
+      onGenerateRoute: (RouteSettings rs){
+        String? routeName = rs.name;
+        if(routeName == "MyHomePage") {
+            return MaterialPageRoute(builder: (context) {
+                  return const MyHomePage(title: '新的开始界面');
+                }
+            );
+        }
+        return null;
+      },
       //定义路由
       routes: {
         "new_page": (context) => NewPage(content: context),
-        "tip_page": (context) => const TipRoute(text: "路由配置页传递的参数"),
+        "tip_route": (context) => const TipRoute(text: "路由配置页传递的参数"),
         "echo_page": (context) => const EchoPage(),
+        "tip_page": (context){
+          return TipPage(text: ModalRoute.of(context)!.settings.arguments as String);
+        },
       },
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -61,7 +74,7 @@ class NewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String c = content.runtimeType.toString();
+    String c = content.runtimeType as String;
 
     return Scaffold(
       appBar: AppBar(
@@ -96,6 +109,7 @@ class TipRoute extends StatelessWidget {
         padding: const EdgeInsets.all(18),
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(text),
               ElevatedButton(
@@ -126,6 +140,7 @@ class EchoPage extends StatelessWidget{
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
                 onPressed: () => Navigator.pop(context, "我是返回值-EchoPage"),
@@ -136,6 +151,39 @@ class EchoPage extends StatelessWidget{
       ),
     );
   }
+}
+
+class TipPage extends StatelessWidget{
+  
+  const TipPage({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+  
+  final String text;
+  
+  @override
+  Widget build(BuildContext context) {
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("TipPage"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(text),
+            ElevatedButton(
+                onPressed: () => Navigator.pop(context, "我是从TipPage返回的值"),
+                child: const Text("上面是父页面传递过来的参数，点击按钮返回"))
+          ],
+        ),
+      ),
+    );
+    
+  }
+  
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -218,7 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  await Navigator.pushNamed(context, "tip_page");
+                  await Navigator.pushNamed(context, "tip_route");
                 },
                 child: const Text("打开提示页2")
             ),
@@ -227,6 +275,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   await Navigator.pushNamed(context, "echo_page", arguments: "hi");
                 },
                 child: const Text("EchoPage按钮"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await Navigator.pushNamed(context, "tip_page", arguments: "tip_page's hi");
+              },
+              child: const Text("TipPage按钮"),
             ),
           ],
         ),
