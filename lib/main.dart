@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "new_page": (context) => NewPage(content: context),
         "tip_page": (context) => const TipRoute(text: "路由配置页传递的参数"),
+        "echo_page": (context) => const EchoPage(),
       },
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -98,7 +99,7 @@ class TipRoute extends StatelessWidget {
             children: <Widget>[
               Text(text),
               ElevatedButton(
-                  onPressed: () => Navigator.pop(context, "我是返回值"),
+                  onPressed: () => Navigator.pop(context, "我是返回值-TipRoute"),
                   child: const Text("返回"))
             ],
           ),
@@ -106,6 +107,34 @@ class TipRoute extends StatelessWidget {
       ),
     );
 
+  }
+}
+
+class EchoPage extends StatelessWidget{
+
+  const EchoPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    //获取使用路由命名传递过来的参数
+    Object? args = ModalRoute.of(context)?.settings.arguments;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("EchoPage"),
+      ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            ElevatedButton(
+                onPressed: () => Navigator.pop(context, "我是返回值-EchoPage"),
+                child: Text(args.toString()),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -186,6 +215,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                 },
                 child: const Text("打开提示页"),
+            ),
+            ElevatedButton(
+                onPressed: () async {
+                  await Navigator.pushNamed(context, "tip_page");
+                },
+                child: const Text("打开提示页2")
+            ),
+            ElevatedButton(
+                onPressed: () async {
+                  await Navigator.pushNamed(context, "echo_page", arguments: "hi");
+                },
+                child: const Text("EchoPage按钮"),
             ),
           ],
         ),
