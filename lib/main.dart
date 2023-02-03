@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'english_words.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
         "new_page": (context) => NewPage(content: context),
         "tip_route": (context) => const TipRoute(text: "路由配置页传递的参数"),
         "echo_page": (context) => const EchoPage(),
+        EnglishWords.englishWordWidget: (context) => const EnglishWords(),
         "tip_page": (context){
           return TipPage(text: ModalRoute.of(context)!.settings.arguments as String);
         },
@@ -74,14 +77,14 @@ class NewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String c = content.runtimeType as String;
+    Type c = content.runtimeType;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("新路由界面"),
       ),
       body: Center(
-        child: Text(c),
+        child: Text(c.toString()),
       ),
     );
 
@@ -243,9 +246,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextButton(onPressed: (){
               //push方法返回的Future对象，包含着NewPage页面出栈时返回的数据
-              Future future = Navigator.push(context, MaterialPageRoute(builder: (context){
-                return NewPage(content: context);
-              }));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context){
+                    return NewPage(content: context);
+                  })
+              );
             }, child: const Text("新路由：既跳转界面")),
             //带参数的页面跳转，TipRoute页面出栈时回传数据，并且在控制台打印回传值
             ElevatedButton(
@@ -266,19 +272,37 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  await Navigator.pushNamed(context, "tip_route");
+                  await Navigator.pushNamed(
+                      context, "tip_route"
+                  );
                 },
                 child: const Text("打开提示页2")
             ),
             ElevatedButton(
                 onPressed: () async {
-                  await Navigator.pushNamed(context, "echo_page", arguments: "hi");
+                  await Navigator.pushNamed(
+                      context, "echo_page",
+                      arguments: "hi"
+                  );
                 },
                 child: const Text("EchoPage按钮"),
             ),
             ElevatedButton(
               onPressed: () async {
-                await Navigator.pushNamed(context, "tip_page", arguments: "tip_page's hi");
+                await Navigator.pushNamed(
+                    context, "tip_page",
+                    arguments: "tip_page's hi"
+                );
+              },
+              child: const Text("TipPage按钮"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await Navigator.pushNamed(
+                    context,
+                    EnglishWords.englishWordWidget,
+                    arguments: "english_word_widget's hi"
+                );
               },
               child: const Text("TipPage按钮"),
             ),
