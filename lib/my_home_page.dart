@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'english_words.dart';
+import 'my_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
 
@@ -159,6 +160,7 @@ class TipPage extends StatelessWidget{
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _selectedIndex = 1;
 
   void _incrementCounter() {
     setState(() {
@@ -168,6 +170,12 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+    });
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
     });
   }
 
@@ -187,6 +195,25 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[ //导航栏右侧菜单
+          IconButton(
+              icon: const Icon(Icons.back_hand),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }
+          ),
+        ],
+      ),
+      drawer: const MyDrawer(), //抽屉
+      bottomNavigationBar: BottomNavigationBar( // 底部导航
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Business'),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
+        ],
+        currentIndex: _selectedIndex,
+        fixedColor: Colors.blue,
+        onTap: _onItemTapped,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it

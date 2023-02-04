@@ -8,7 +8,7 @@ class InputPageWidget extends StatelessWidget {
   //路由命名名称
   static const String inputPageWidget = "input_page_widget";
 
-  InputPageWidget({super.key});
+  const InputPageWidget({super.key});
 
   void login(BuildContext context, String uid, String pwd){
     if(uid.isNotEmpty && pwd.isNotEmpty){
@@ -33,45 +33,49 @@ class InputPageWidget extends StatelessWidget {
     }
   }
 
-  final TextEditingController tecUid = TextEditingController();
-  final TextEditingController tecPwd = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
+
+    TextEditingController tecUid = TextEditingController();
+    TextEditingController tecPwd = TextEditingController();
+
     //获取使用路由命名传递过来的参数
-    Object? args = ModalRoute.of(context)?.settings.arguments;
+    //Object? args = ModalRoute.of(context)?.settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: const Text("InputPageWidget"),
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-             TextField(
-              autofocus: true,
-              controller: tecUid,
-              decoration: const InputDecoration(
-                labelText: "用户名",
-                hintText: "请输入用户名",
-                prefixIcon: Icon(Icons.person),
-              ),
-              onChanged: (value) {
-                tecUid.text = value;
-              },
-            ),
-            TextField(
-              controller: tecPwd,
-              decoration: const InputDecoration(
-                labelText: "密码",
-                hintText: "请输入密码",
-                prefixIcon: Icon(Icons.lock),
-              ),
-              obscureText: true,
-              onChanged: (value) {
-                tecPwd.text = value;
-              },
+            Column(
+              children: [
+                TextField(
+                  autofocus: true,
+                  controller: tecUid,
+                  decoration: const InputDecoration(
+                    labelText: "用户名",
+                    hintText: "请输入用户名",
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                  onChanged: (value) {
+                    tecUid.text = value;
+                  },
+                ),
+                TextField(
+                  controller: tecPwd,
+                  decoration: const InputDecoration(
+                    labelText: "密码",
+                    hintText: "请输入密码",
+                    prefixIcon: Icon(Icons.lock),
+                  ),
+                  obscureText: true,
+                  onChanged: (value) {
+                    tecPwd.text = value;
+                  },
+                ),
+              ],
             ),
             ElevatedButton(
               onPressed: () async => login(context, tecUid.text, tecPwd.text),

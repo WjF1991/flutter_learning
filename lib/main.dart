@@ -48,9 +48,9 @@ class MyApp extends StatelessWidget {
           return TipPage(text: ModalRoute.of(context)!.settings.arguments as String);
         },
         MyHomePage.myHomePageWidget: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
-        InputPageWidget.inputPageWidget: (context) => InputPageWidget(),
+        InputPageWidget.inputPageWidget: (context) => const InputPageWidget(),
       },
-      home: InputPageWidget(),
+      home: const InputPageWidget(),
 
     );
   }
