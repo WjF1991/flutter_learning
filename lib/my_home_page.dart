@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'english_words.dart';
+import 'list_view_page.dart';
 import 'my_drawer.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -160,7 +161,7 @@ class TipPage extends StatelessWidget{
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   void _incrementCounter() {
     setState(() {
@@ -170,6 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      _selectedIndex = _counter % 3;
     });
   }
 
@@ -207,9 +209,18 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: const MyDrawer(), //抽屉
       bottomNavigationBar: BottomNavigationBar( // 底部导航
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Business'),
-          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              label: 'Business'
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'School'
+          ),
         ],
         currentIndex: _selectedIndex,
         fixedColor: Colors.blue,
@@ -242,69 +253,86 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            TextButton(onPressed: (){
-              //push方法返回的Future对象，包含着NewPage页面出栈时返回的数据
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context){
-                    return NewPage(content: context);
-                  })
-              );
-            }, child: const Text("新路由：既跳转界面")),
-            //带参数的页面跳转，TipRoute页面出栈时回传数据，并且在控制台打印回传值
-            ElevatedButton(
-              onPressed: () async {
-                var result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context){
-                    return const TipRoute(
-                      text: "我是参数xxx-xxx",
-                    );
-                  }),
-                );
-                if (kDebugMode) {
-                  print("路有返回值：$result");
-                }
-              },
-              child: const Text("打开提示页"),
-            ),
-            ElevatedButton(
-                onPressed: () async {
-                  await Navigator.pushNamed(
-                      context, TipRoute.tipRouteWidget
+            Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              alignment: WrapAlignment.center,
+              children: <Widget>[
+                TextButton(onPressed: (){
+                  //push方法返回的Future对象，包含着NewPage页面出栈时返回的数据
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context){
+                        return NewPage(content: context);
+                      })
                   );
-                },
-                child: const Text("打开提示页2")
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await Navigator.pushNamed(
-                    context,
-                    EchoPage.echoPageWidget,
-                    arguments: "hi"
-                );
-              },
-              child: const Text("EchoPage按钮"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await Navigator.pushNamed(
-                    context,
-                    TipPage.tipPageWidget,
-                    arguments: "tip_page's hi"
-                );
-              },
-              child: const Text("TipPage按钮"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await Navigator.pushNamed(
-                    context,
-                    EnglishWords.englishWordWidget,
-                    arguments: "english_word_widget's hi"
-                );
-              },
-              child: const Text("EnglishWords按钮"),
+                }, child: const Text("新路由：既跳转界面")),
+                //带参数的页面跳转，TipRoute页面出栈时回传数据，并且在控制台打印回传值
+                ElevatedButton(
+                  onPressed: () async {
+                    var result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context){
+                        return const TipRoute(
+                          text: "我是参数xxx-xxx",
+                        );
+                      }),
+                    );
+                    if (kDebugMode) {
+                      print("路有返回值：$result");
+                    }
+                  },
+                  child: const Text("打开提示页"),
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.pushNamed(
+                          context, TipRoute.tipRouteWidget
+                      );
+                    },
+                    child: const Text("打开提示页2")
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                        context,
+                        EchoPage.echoPageWidget,
+                        arguments: "hi"
+                    );
+                  },
+                  child: const Text("EchoPage按钮"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                        context,
+                        TipPage.tipPageWidget,
+                        arguments: "tip_page's hi"
+                    );
+                  },
+                  child: const Text("TipPage按钮"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                        context,
+                        EnglishWords.englishWordWidget,
+                        arguments: "english_word_widget's hi"
+                    );
+                  },
+                  child: const Text("EnglishWords按钮"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    await Navigator.pushNamed(
+                        context,
+                        ListViewPage.listViewPageWidget,
+                        arguments: "list_view_words_widget's hi"
+                    );
+                  },
+                  child: const Text("ListViewPage按钮"),
+                ),
+              ],
             ),
           ],
         ),

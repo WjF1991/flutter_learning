@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'english_words.dart';
 import 'input_widget.dart';
+import 'list_view_page.dart';
 import 'my_home_page.dart';
 
 void main() {
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
         },
         MyHomePage.myHomePageWidget: (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
         InputPageWidget.inputPageWidget: (context) => const InputPageWidget(),
+        ListViewPage.listViewPageWidget: (context) => const ListViewPage(),
       },
       home: const InputPageWidget(),
 

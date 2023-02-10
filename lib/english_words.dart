@@ -22,6 +22,7 @@ class PicAndSwitchState extends State<EnglishWords>
 
   bool isSwitchSelected = false;
   bool isCheckboxChecked = false;
+  String rWords = WordPair.random().asCamelCase;
 
   @override
   void initState() {
@@ -44,7 +45,6 @@ class PicAndSwitchState extends State<EnglishWords>
   @override
   Widget build(BuildContext context) {
     var take = nouns.take(5);
-    String rWords = WordPair.random().asCamelCase;
     String args = ModalRoute.of(context)?.settings.arguments as String;
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +53,7 @@ class PicAndSwitchState extends State<EnglishWords>
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton( //悬浮按钮
           onPressed:_onAdd, //悬浮按钮
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.refresh),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,
@@ -61,9 +61,15 @@ class PicAndSwitchState extends State<EnglishWords>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            IconButton(icon: const Icon(Icons.home), onPressed: () {  },),
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {  },
+            ),
             const SizedBox(), //中间位置空出
-            IconButton(icon: const Icon(Icons.business), onPressed: () {  },),
+            IconButton(
+              icon: const Icon(Icons.business),
+              onPressed: () {  },
+            ),
           ], //均分底部导航栏横向空间
         ),
       ),
@@ -182,5 +188,8 @@ class PicAndSwitchState extends State<EnglishWords>
 
 
   void _onAdd() {
+    setState(() {
+      rWords = WordPair.random().asCamelCase;
+    });
   }
 }
